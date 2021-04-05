@@ -71,6 +71,7 @@ end
 function love.update(dt)
     if gameState == 'serve' then
         ball.dy = math.random(-50, 50)
+        player2.dy = 0
         
         if servingPlayer == 1 then
             ball.dx = math.random(140, 200)
@@ -168,10 +169,10 @@ function love.update(dt)
 
 
 -- AI controlled this way theres just a chance will hit the ball
-   if ball.dy > 0 then
+   if gameState ~= ('serve') and ball.dy > 0 then
        player2.dy = math.random(10, 150)
       
-   elseif ball.dy < 0 then 
+   elseif gameState ~= ('serve') and ball.dy < 0 then 
         player2.dy = -math.random(10, 150)
        
     end

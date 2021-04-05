@@ -70,8 +70,8 @@ end
 
 function love.update(dt)
     if gameState == 'serve' then
-
         ball.dy = math.random(-50, 50)
+        
         if servingPlayer == 1 then
             ball.dx = math.random(140, 200)
         else
@@ -161,15 +161,32 @@ function love.update(dt)
     end
 
 
-    if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
-    else
-        player2.dy = 0
+  
+ -- AI controlled this way always hit the ball
+   -- player2.dy = ball.dy
+   -- player2.y = ball.y
+
+
+-- AI controlled this way theres just a chance will hit the ball
+   if ball.dy > 0 then
+       player2.dy = math.random(10, 150)
+      
+   elseif ball.dy < 0 then 
+        player2.dy = -math.random(10, 150)
+       
     end
+   
+
+  --  if love.keyboard.isDown('up') then
+    --     player2.dy = -PADDLE_SPEED
+    --elseif love.keyboard.isDown('down') then
+     --   player2.dy = PADDLE_SPEED
+    --else
+     --   player2.dy = 0
+    --end
 
     if gameState == 'play' then
+   
         ball:update(dt)
     end
 
@@ -228,6 +245,7 @@ function love.draw()
             0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'play' then
+        
         -- no UI messages to display in play
     elseif gameState == 'done' then
         -- UI messages
@@ -246,6 +264,7 @@ function love.draw()
     ball:render()
 
     displayFPS()
+    displayBallsParameters()
 
 
     push:finish()
@@ -268,5 +287,16 @@ function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 255/255, 0, 255/255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setColor(255, 255, 255, 255)
+end
+
+function displayBallsParameters()
+
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 255/255, 0, 255/255)
+    love.graphics.print(' Ball dy: ' .. tostring(ball.dy), VIRTUAL_WIDTH - 100, 10)
+    love.graphics.print(' Ball y: ' .. tostring(ball.dy), VIRTUAL_WIDTH - 100, 20)
+    love.graphics.print(' Ball dx: ' .. tostring(ball.dx), VIRTUAL_WIDTH - 100, 30)
+    love.graphics.print(' Ball x: ' .. tostring(ball.x), VIRTUAL_WIDTH - 100, 40)
     love.graphics.setColor(255, 255, 255, 255)
 end
